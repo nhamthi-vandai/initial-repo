@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+*.md
+.husky
+.eslintcache
+*.log
+npm-debug.log*
