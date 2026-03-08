@@ -1,0 +1,31 @@
+{
+  "common": {
+    "success": "Success",
+    "error": "Error",
+    "notFound": "Resource not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Forbidden",
+    "badRequest": "Bad request",
+    "internalError": "Internal server error"
+  },
+  "auth": {
+    "loginSuccess": "Login successful",
+    "loginFailed": "Invalid credentials",
+    "registerSuccess": "Registration successful",
+    "registerFailed": "Registration failed",
+    "tokenExpired": "Token expired",
+    "tokenInvalid": "Invalid token",
+    "emailExists": "Email already exists"
+  },
+  "users": {
+    "created": "User created successfully",
+    "updated": "User updated successfully",
+    "deleted": "User deleted successfully",
+    "notFound": "User not found",
+    "listSuccess": "Users retrieved successfully"
+  },
+  "tenant": {
+    "notFound": "Tenant not found",
+    "required": "Tenant ID is required"
+  }
+}
