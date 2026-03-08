@@ -1,52 +1,90 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-
-interface HealthResponse {
-  status: string;
-  timestamp: string;
-  uptime: number;
-  environment: string;
-  version: string;
-}
+import { ResponseUtil } from '../core/utils/response.util';
 
 export default async function healthRoutes(app: FastifyInstance): Promise<void> {
+  // GET /health - Application health check
   app.get(
     '/health',
     {
       schema: {
+        tags: ['health'],
+        description: 'Application health check',
         response: {
           200: {
             type: 'object',
             properties: {
-              status: { type: 'string' },
+              success: { type: 'boolean' },
+              message: { type: 'string' },
+              data: {
+                type: 'object',
+                properties: {
+                  status: { type: 'string' },
+                  uptime: { type: 'number' },
+                  timestamp: { type: 'string' },
+                },
+              },
               timestamp: { type: 'string' },
-              uptime: { type: 'number' },
-              environment: { type: 'string' },
-              version: { type: 'string' },
             },
           },
         },
       },
     },
-    async (_request: FastifyRequest, reply: FastifyReply): Promise<HealthResponse> => {
-      return reply.send({
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      const healthData = {
         status: 'ok',
-        timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        environment: process.env.NODE_ENV || 'development',
-        version: process.env.npm_package_version || '1.0.0',
-      });
+        timestamp: new Date().toISOString(),
+      };
+      return ResponseUtil.success(reply, healthData, 'Service is healthy');
     },
   );
 
-  app.get('/health/db', {}, async (_request: FastifyRequest, reply: FastifyReply) => {
-    try {
-      const client = await app.pg.connect();
-      await client.query('SELECT 1');
-      client.release();
-      return reply.send({ status: 'ok', database: 'connected' });
-    } catch (error) {
-      app.log.error(error, 'Database health check failed');
-      return reply.status(503).send({ status: 'error', database: 'disconnected' });
-    }
-  });
+  // GET /health/db - Database health check
+  app.get(
+    '/health/db',
+    {
+      schema: {
+        tags: ['health'],
+        description: 'Database health check',
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              message: { type: 'string' },
+              data: {
+                type: 'object',
+                properties: {
+                  postgres: { type: 'string' },
+                  timestamp: { type: 'string' },
+                },
+              },
+              timestamp: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const client = await app.pg.connect();
+        try {
+          await client.query('SELECT 1');
+          const healthData = {
+            postgres: 'connected',
+            timestamp: new Date().toISOString(),
+          };
+          return ResponseUtil.success(reply, healthData, 'Database is healthy');
+        } finally {
+          client.release();
+        }
+      } catch {
+        const healthData = {
+          postgres: 'disconnected',
+          timestamp: new Date().toISOString(),
+        };
+        return ResponseUtil.error(reply, 'Database is unhealthy', 503, 'DB_ERROR', healthData);
+      }
+    },
+  );
 }

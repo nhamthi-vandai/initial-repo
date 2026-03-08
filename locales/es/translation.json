@@ -1,0 +1,31 @@
+{
+  "common": {
+    "success": "Éxito",
+    "error": "Error",
+    "notFound": "Recurso no encontrado",
+    "unauthorized": "Acceso no autorizado",
+    "forbidden": "Prohibido",
+    "badRequest": "Solicitud incorrecta",
+    "internalError": "Error interno del servidor"
+  },
+  "auth": {
+    "loginSuccess": "Inicio de sesión exitoso",
+    "loginFailed": "Credenciales inválidas",
+    "registerSuccess": "Registro exitoso",
+    "registerFailed": "Registro fallido",
+    "tokenExpired": "Token expirado",
+    "tokenInvalid": "Token inválido",
+    "emailExists": "El correo electrónico ya existe"
+  },
+  "users": {
+    "created": "Usuario creado exitosamente",
+    "updated": "Usuario actualizado exitosamente",
+    "deleted": "Usuario eliminado exitosamente",
+    "notFound": "Usuario no encontrado",
+    "listSuccess": "Usuarios recuperados exitosamente"
+  },
+  "tenant": {
+    "notFound": "Inquilino no encontrado",
+    "required": "Se requiere ID de inquilino"
+  }
+}

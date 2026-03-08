@@ -43,6 +43,18 @@ export const envSchema = {
       type: 'string',
       default: 'postgres',
     },
+    MONGODB_URL: {
+      type: 'string',
+      default: 'mongodb://localhost:27017/fastify_db',
+    },
+    JWT_SECRET: {
+      type: 'string',
+      default: 'your-secret-key-change-this-in-production',
+    },
+    JWT_EXPIRES_IN: {
+      type: 'string',
+      default: '24h',
+    },
     CORS_ORIGIN: {
       type: 'string',
       default: '*',
@@ -54,6 +66,10 @@ export const envSchema = {
     RATE_LIMIT_TIMEWINDOW: {
       type: 'integer',
       default: 60000,
+    },
+    DEFAULT_LANGUAGE: {
+      type: 'string',
+      default: 'en',
     },
   },
 };
@@ -71,9 +87,13 @@ declare module 'fastify' {
       DB_NAME: string;
       DB_USER: string;
       DB_PASSWORD: string;
+      MONGODB_URL: string;
+      JWT_SECRET: string;
+      JWT_EXPIRES_IN: string;
       CORS_ORIGIN: string;
       RATE_LIMIT_MAX: number;
       RATE_LIMIT_TIMEWINDOW: number;
+      DEFAULT_LANGUAGE: string;
     };
   }
 }
